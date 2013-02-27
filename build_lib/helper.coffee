@@ -8,28 +8,29 @@ helper =
       process.stderr.write data.toString()
     provider.stdout.on 'data', (data) ->
       print data.toString()
-    provider.on 'exit', (code) ->
+    provider.on 'exit', (code, err) ->
       callback?() if code is 0
+      process.exit code
 
 
   cleanupFilenames: (file) ->
     fs.rename file, (->
       file.replace '.js.js', '.js')()
 
-  build: (callback) ->
-    coffee = spawn 'coffee', ['-c', '-o', 'lib', 'src']
+  build: (src, lib, callback) ->
+    coffee = spawn 'coffee', ['-c', '-o', lib, src]
     helper.handleData(coffee)
 
 
   # Optimize the application.js with r.js
   # and use the almond AMD Shims.
-  optimize: ->
+  optimize: (baseUrl) ->
     node = spawn 'node', ['./vendor/r.js',
                           '-o',
                           'name=../vendor/almond',
                           'include=application',
                           'out=./lib/combined.js',
-                          'baseUrl=./lib',
+                          "baseUrl=#{baseUrl}",
                           'optimize=none',
                           'wrap=true']
 
