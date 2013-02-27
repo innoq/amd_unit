@@ -4,10 +4,10 @@ helper = require './build_lib/helper'
 task 'cleanup', 'Remove all files from target directory', ->
 
 task 'build', 'Build lib/ from src/', ->
-  helper.build(new filewalker('./lib', helper.cleanupFilenames).readDir)
+  helper.build './src', './lib', new filewalker('./lib', helper.cleanupFilenames).readDir
 
 task 'optimize', 'Optimizing application.js with r.js', ->
-  helper.optimize()
+  helper.optimize('./lib')
 
 task 'test', 'executing qunit test suite', ->
   helper.run_qunit_tests('./index.html')
