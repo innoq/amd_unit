@@ -19,7 +19,7 @@ helper =
 
   build: (src, lib, callback) ->
     coffee = spawn 'coffee', ['-c', '-o', lib, src]
-    helper.handleData(coffee)
+    helper.handleData(coffee, callback)
 
 
   # Optimize the application.js with r.js
