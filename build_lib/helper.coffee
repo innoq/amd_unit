@@ -6,9 +6,11 @@ helper =
   handleData: (provider, callback) ->
     provider.stderr.on 'data', (data) ->
       process.stderr.write data.toString()
+
     provider.stdout.on 'data', (data) ->
       print data.toString()
-    provider.on 'exit', (code, err) ->
+
+    provider.on 'exit', (code) ->
       callback?() if code is 0
       process.exit code
 
