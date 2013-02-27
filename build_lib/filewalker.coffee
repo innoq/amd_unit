@@ -15,6 +15,6 @@ class FileWalker
     @examine(path.join(@path, file)) for file in files
 
   readDir: =>
-    fs.readdir(@path, @examineDir)
+    fs.readdir(path.resolve(@path), @examineDir)
 
 exports.filewalker = FileWalker

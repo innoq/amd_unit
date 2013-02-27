@@ -1,25 +1,32 @@
 fs = require 'fs'
-{print} = require 'sys'
+{puts} = require 'sys'
 {spawn} = require 'child_process'
 
 helper =
-  handleData: (provider, callback) ->
+  handleData: (provider, callback, provideExit) ->
     provider.stderr.on 'data', (data) ->
-      process.stderr.write data.toString()
+      puts data.toString()
 
     provider.stdout.on 'data', (data) ->
-      print data.toString()
+      puts data.toString()
 
     provider.on 'exit', (code) ->
       callback?() if code is 0
-      process.exit code
+      process.exit code if provideExit?
 
 
-  cleanupFilenames: (file) ->
-    fs.rename file, (->
-      file.replace '.js.js', '.js')()
+  cleanupFilenames: ->
+    # giving some output and delivering a callback,
+    # to use it for example as build callback.
+    #
+    # @return [Function]
+    # @example helper.cleanupFilenames()
+    puts "-- cleaning redundant file endings from js.coffee files"
+    (file) -> fs.rename file, (-> file.replace '.js.js', '.js')()
+
 
   build: (src, lib, callback) ->
+    puts "compiling #{src} to #{lib}"
     coffee = spawn 'coffee', ['-c', '-o', lib, src]
     helper.handleData(coffee, callback)
 
@@ -42,6 +49,6 @@ helper =
 
   run_qunit_tests: (test_suite) ->
     phantomjs = spawn 'phantomjs', ['vendor/phantomjs-qunit-runner.js', test_suite]
-    helper.handleData(phantomjs)
+    helper.handleData(phantomjs, null, true)
 
 module.exports = helper
