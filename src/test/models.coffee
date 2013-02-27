@@ -1,4 +1,7 @@
 module "models"
 
 test "truthiness", ->
-  strictEqual 'helslo', 'hello'
+  strictEqual 'hello', 'hello'
+  
+test "falsiness", ->
+  strictEqual 'hello', 'world'
