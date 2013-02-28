@@ -3,7 +3,7 @@ fs = require 'fs'
 {spawn} = require 'child_process'
 
 helper =
-  handleData: (provider, callback, provideExit) ->
+  handleData: (provider, callback) ->
     provider.stderr.on 'data', (data) ->
       puts data.toString()
 
@@ -12,7 +12,7 @@ helper =
 
     provider.on 'exit', (code) ->
       callback?() if code is 0
-      process.exit code if provideExit?
+      process.exit code unless code is 0
 
 
   cleanupFilenames: ->
@@ -49,6 +49,6 @@ helper =
 
   run_qunit_tests: (test_suite) ->
     phantomjs = spawn 'phantomjs', ['vendor/phantomjs-qunit-runner.js', test_suite]
-    helper.handleData(phantomjs, null, true)
+    helper.handleData(phantomjs, null)
 
 module.exports = helper
