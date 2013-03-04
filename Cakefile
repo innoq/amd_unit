@@ -14,12 +14,12 @@ task 'build', 'Build lib/ from source pathes (e.g. ./src:./src2:./src3', (option
 
   helper.build src, lib, (new filewalker(lib, helper.cleanupFilenames())).readDir
 
-task 'optimize', 'Optimizing application.js with r.js', (options)  ->
+task 'optimize', 'Optimizing application.js with r.js', (options) ->
   console.log options
   lib = options['lib'] || './lib'
   helper.optimize(lib)
 
-task 'test', 'executing qunit test suite', ->
+task 'test', 'executing qunit test suite', (options) ->
   test = options['test'] || './index.html'
   helper.run_qunit_tests(test)
 
