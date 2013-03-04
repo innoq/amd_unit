@@ -6,7 +6,7 @@ option '-s', '--source [FOLDER]', 'source folder of coffee files'
 option '-t', '--testsuite [FILE]', 'test loader file (e.g. index.html)'
 option '-a', '--almond [FILE]', 'almond shim loader'
 option '-o', '--out [FILE]', 'output file name'
-option '-i', '--include [FILE]', 'output file name'
+option '-m', '--main_module [FILE]', 'output file name'
 
 task 'cleanup', 'Remove all files from target directory', ->
 
@@ -21,9 +21,9 @@ task 'optimize', 'Optimizing application.js with r.js', (options) ->
   console.log '## OPTIMIZING JS FILES WITH SHIM LOADER'
   lib = options['lib'] || './lib'
   almond = options['almond'] #|| './lib'
-  include = options['include']
+  mainModule = options['main_module']
   output = options['out']
-  helper.optimize(lib, almond, include, output)
+  helper.optimize(lib, almond, mainModule, output)
 
 task 'test', 'executing qunit test suite', (options) ->
   console.log '## EXECUTING TEST SUITE'
