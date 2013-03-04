@@ -40,12 +40,12 @@ helper =
 
   # Optimize the application.js with r.js
   # and use the almond AMD Shims.
-  optimize: (baseUrl) ->
+  optimize: (baseUrl, almond, output) ->
     node = spawn 'node', ['./vendor/r.js',
                           '-o',
-                          'name=../vendor/almond',
-                          'include=application',
-                          'out=./lib/combined.js',
+                          "name=#{almond}",
+                          "include=#{include}",
+                          "out=#{output}",
                           "baseUrl=#{baseUrl}",
                           'optimize=none',
                           'wrap=true']
