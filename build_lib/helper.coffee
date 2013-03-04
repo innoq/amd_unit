@@ -15,6 +15,7 @@ helper =
       process.exit code unless code is 0
 
 
+
   cleanupFilenames: ->
     # giving some output and delivering a callback,
     # to use it for example as build callback.
@@ -26,10 +27,16 @@ helper =
 
 
   build: (src, lib, callback) ->
-    puts "compiling #{src} to #{lib}"
-    coffee = spawn 'coffee', ['-c', '-o', lib, src]
-    helper.handleData(coffee, callback)
+    sources = helper.parseSourcePathes(src)
 
+    for source in sources
+      puts "compiling #{source} to #{lib}"
+      coffee = spawn 'coffee', ['-c', '-o', lib, source]
+      helper.handleData(coffee, callback)
+
+
+  parseSourcePathes: (path) ->
+    path = path.split(':')
 
   # Optimize the application.js with r.js
   # and use the almond AMD Shims.
