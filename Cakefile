@@ -4,6 +4,7 @@ helper = require './build_lib/helper'
 
 option '-l', '--lib [FOLDER]', 'library compile target folder'
 option '-s', '--source [FOLDER]', 'source folder of coffee files'
+option '-t', '--test [HTML-File]', 'test loader file (e.g. index.html)'
 
 task 'cleanup', 'Remove all files from target directory', ->
 
@@ -19,7 +20,8 @@ task 'optimize', 'Optimizing application.js with r.js', (options)  ->
   helper.optimize(lib)
 
 task 'test', 'executing qunit test suite', ->
-  helper.run_qunit_tests('./index.html')
+  test = options['test'] || './index.html'
+  helper.run_qunit_tests(test)
 
 task 'all', 'Builds and optimizes the appliation js files', ->
   invoke 'build'
