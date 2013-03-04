@@ -1,10 +1,9 @@
 helper = require './build_lib/helper'
 {filewalker} = require './build_lib/filewalker'
 
-
 option '-l', '--lib [FOLDER]', 'library compile target folder'
 option '-s', '--source [FOLDER]', 'source folder of coffee files'
-option '-t', '--test [HTML-File]', 'test loader file (e.g. index.html)'
+option '-t', '--testsuite [FILE]', 'test loader file (e.g. index.html)'
 
 task 'cleanup', 'Remove all files from target directory', ->
 
@@ -20,8 +19,8 @@ task 'optimize', 'Optimizing application.js with r.js', (options) ->
   helper.optimize(lib)
 
 task 'test', 'executing qunit test suite', (options) ->
-  test = options['test'] || './index.html'
-  helper.run_qunit_tests(test)
+  testSuite = options['testsuite'] || './index.html'
+  helper.run_qunit_tests(testSuite)
 
 task 'all', 'Builds and optimizes the appliation js files', ->
   invoke 'build'
