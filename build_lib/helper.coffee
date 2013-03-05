@@ -1,6 +1,7 @@
 fs = require 'fs'
 {puts} = require 'sys'
 {spawn} = require 'child_process'
+{filewalker} = require './filewalker'
 
 helper =
   handleData: (provider, callback) ->
@@ -22,11 +23,19 @@ helper =
     #
     # @return [Function]
     # @example helper.cleanupFilenames()
-    puts "-- cleaning redundant file endings from js.coffee files"
-    (file) -> fs.rename file, (-> file.replace '.js.js', '.js')()
+    (file) ->
+      puts file
+      fs.rename file, (-> file.replace '.js.js', '.js')()
+
+
+  removeFile: ->
+    (file) ->
+      puts "-- unlink #{file}"
+      fs.unlink file
 
 
   build: (src, lib, callback) ->
+    puts "-- building files from #{src}"
     sources = helper.parseSourcePathes(src)
 
     for source in sources
@@ -52,7 +61,13 @@ helper =
 
     helper.handleData(node)
 
+  removeRedundantFileEndings: (path) ->
+    puts "-- cleaning redundant file endings from js.coffee files in #{path}"
+    (new filewalker(path, helper.cleanupFilenames())).readDir
 
+  clean: (path) ->
+    puts "-- removing files from #{path}"
+    (new filewalker(path, helper.removeFile())).readDir()
 
   run_qunit_tests: (test_suite) ->
     phantomjs = spawn 'mocha-phantomjs', [test_suite]
