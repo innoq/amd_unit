@@ -23,15 +23,11 @@ helper =
     #
     # @return [Function]
     # @example helper.cleanupFilenames()
-    (file) ->
-      puts file
-      fs.rename file, (-> file.replace '.js.js', '.js')()
+    (file) -> fs.rename file, (-> file.replace '.js.js', '.js')()
 
 
   removeFile: ->
-    (file) ->
-      puts "-- unlink #{file}"
-      fs.unlink file
+    (file) -> fs.unlink file
 
 
   build: (src, lib, callback) ->
