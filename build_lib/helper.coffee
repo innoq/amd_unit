@@ -1,7 +1,12 @@
 fs = require 'fs'
+path = require 'path'
 {puts} = require 'sys'
 {spawn} = require 'child_process'
 {filewalker} = require './filewalker'
+
+# @license [https://github.com/AvianFlu/ncp/blob/master/LICENSE.md] MIT
+{ncp} = require 'ncp'
+ncp.limit = 5;
 
 helper =
   handleData: (provider, callback) ->
@@ -68,5 +73,13 @@ helper =
   run_qunit_tests: (test_suite) ->
     phantomjs = spawn 'mocha-phantomjs', [test_suite]
     helper.handleData(phantomjs, null)
+
+  copy: (from, to) ->
+    sources = helper.parseSourcePathes(from)
+    for source in sources
+      puts "-- copying dependencies from #{path.resolve(from)} to #{to}"
+      base_name =  path.basename(source)
+      ncp source, "#{to}/#{base_name}", (err) ->
+        puts 'copiying the dependencies failed!' if err
 
 module.exports = helper
