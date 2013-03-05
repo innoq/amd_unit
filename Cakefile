@@ -21,6 +21,8 @@ task 'clean', 'Remove all files from target directory', (options) ->
 
 
 task 'build', 'Build lib/ from source pathes (e.g. ./src:./src2:./src3', (options) ->
+  invoke 'clean'
+
   lib = options['lib'] || './lib'
   src = options['source'] || './src'
 
@@ -41,7 +43,6 @@ task 'test', 'executing qunit test suite', (options) ->
 
 
 task 'all', 'Builds and optimizes the appliation js files', ->
-  invoke 'clean'
   invoke 'build'
   invoke 'optimize'
   invoke 'test'
