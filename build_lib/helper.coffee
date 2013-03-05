@@ -55,7 +55,7 @@ helper =
 
 
   run_qunit_tests: (test_suite) ->
-    phantomjs = spawn 'phantomjs', ['vendor/phantomjs-qunit-runner.js', test_suite]
+    phantomjs = spawn 'mocha-phantomjs', [test_suite]
     helper.handleData(phantomjs, null)
 
 module.exports = helper
